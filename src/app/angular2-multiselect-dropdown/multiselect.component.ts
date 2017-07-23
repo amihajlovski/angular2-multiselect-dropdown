@@ -24,12 +24,12 @@ const noop = () => {
 
 export class AngularMultiSelect implements OnInit, ControlValueAccessor {
 
-    @Input() 
+    @Input()
     data: Array<ListItem>;
-    
+
     @Input()
     settings:DropdownSettings;
-    
+
     @Output('onSelect')
     onSelect: EventEmitter<ListItem> = new EventEmitter<ListItem>();
 
@@ -57,7 +57,8 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
         badgeShowLimit: 999999999999,
         classes:'',
         disabled: false,
-        searchPlaceholderText: 'Search'
+        searchPlaceholderText: 'Search',
+        hideRemoveButton: false
     }
     constructor(){
 
@@ -76,7 +77,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
                 if(this.settings.disabled){
                     return false;
                 }
-        
+
                 let found = this.isSelected(item);
                 let limit = this.selectedItems.length < this.settings.limitSelection ? true : false;
 
@@ -85,13 +86,13 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
                         if(limit){
                             this.addSelected(item);
                             this.onSelect.emit(item);
-                        } 
+                        }
                     }
                     else{
                         this.addSelected(item);
                         this.onSelect.emit(item);
                     }
-                    
+
                 }
                 else{
                 this.removeSelected(item);
@@ -102,7 +103,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
                 }
                 if(this.data.length == this.selectedItems.length){
                     this.isSelectAll = true;
-                }    
+                }
     }
     private onTouchedCallback: () => void = noop;
     private onChangeCallback: (_: any) => void = noop;
@@ -111,7 +112,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
         if (value !== undefined && value !== null) {
             if(this.settings.singleSelection){
                 try{
-                    
+
                     if(value.length > 1){
                         this.selectedItems = [value[0]];
                         throw new MyException(404, { "msg": "Single Selection Mode, Selected Items cannot have more than one item." });
@@ -122,7 +123,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
                 catch(e){
                     console.error(e.body.msg);
                 }
-                
+
             }
             else{
                 if(this.settings.limitSelection){
@@ -172,7 +173,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
            if(clickedItem.id === item.id){
                this.selectedItems.splice(this.selectedItems.indexOf(item),1);
            }
-        });    
+        });
         this.onChangeCallback(this.selectedItems);
     }
     toggleDropdown(evt){
@@ -195,7 +196,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor {
             this.isSelectAll = false;
             this.onChangeCallback(this.selectedItems);
             this.onDeSelectAll.emit(this.selectedItems);
-        }     
+        }
     }
 }
 

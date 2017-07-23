@@ -11,4 +11,5 @@ export interface DropdownSettings{
     limitSelection?: Number;
     disabled?: Boolean;
     searchPlaceholderText: String;
-} 
+    hideRemoveButton: Boolean;
+}
